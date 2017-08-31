@@ -24,7 +24,7 @@ defmodule Gandalf do
   end
 
   defp check_cookie(conn, options) do
-    conn = Plug.Conn.fetch_cookies(conn)
+    conn = fetch_cookies(conn)
     conn.cookies["auth_key"] == options[:auth_key]
   end
 
