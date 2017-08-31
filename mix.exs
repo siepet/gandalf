@@ -34,6 +34,7 @@ defmodule Gandalf.Mixfile do
   defp deps do
     [
       {:plug, "~> 1.0"},
+      {:cowboy, "~> 1.0.0"}
     ]
   end
 
