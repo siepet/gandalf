@@ -40,7 +40,8 @@ defmodule Gandalf.Mixfile do
 
   defp package do
     [
-      maintainers: ["Marcin Siepetowski"],
+      maintainers: ["Marcin Siepetowski", "Dominik Filip"],
+      licenses: ["MIT"],
       links: %{
         "GitHub" => "http://github.com/siepet/gandalf"
       }
