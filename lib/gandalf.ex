@@ -1,11 +1,10 @@
 defmodule Gandalf do
-  import Plug.Conn
+  use Plug.Builder
 
-  def init(options) do
-    options
-  end
+  plug Plug.Parsers, parsers: [:urlencoded]
 
   def call(conn, options) do
+    conn = super(conn, options) # call Plug.Parser
     conn
     |> check_access(options)
   end
@@ -29,15 +28,9 @@ defmodule Gandalf do
     end
   end
 
-  # TODO:
-  defp handle_form_submit(conn, _options) do
-    conn = parse_body(conn)
-  end
-
-  # NOTE: manual Plug call
-  defp parse_body(conn) do
-    opts = [parsers: [Plug.Parsers.URLENCODED]]
-    Plug.Parsers.call(conn, Plug.Parsers.init(opts))
+  # TODO: implement
+  defp handle_form_submit(_conn, _options) do
+    # conn.params
   end
 
   defp render_form(conn) do
