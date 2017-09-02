@@ -30,7 +30,14 @@ defmodule Gandalf do
   end
 
   # TODO:
-  defp handle_form_submit(_conn, _options) do
+  defp handle_form_submit(conn, _options) do
+    conn = parse_body(conn)
+  end
+
+  # NOTE: manual Plug call
+  defp parse_body(conn) do
+    opts = [parsers: [Plug.Parsers.URLENCODED]]
+    Plug.Parsers.call(conn, Plug.Parsers.init(opts))
   end
 
   defp render_form(conn) do
