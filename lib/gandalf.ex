@@ -6,26 +6,31 @@ defmodule Gandalf do
   end
 
   def call(conn, options) do
-    case conn.method do
-      "POST" -> handle_form_submit(conn, options)
-      _ -> check_access(conn, options)
-    end
-  end
-
-  # TODO:
-  defp handle_form_submit(_conn, _options) do
+    conn
+    |> check_access(options)
   end
 
   defp check_access(conn, options) do
     case check_cookie(conn, options) do
       true -> conn
-      false -> render_form(conn)
+      false -> handle_unauthorized_access(conn, options)
     end
   end
 
   defp check_cookie(conn, options) do
     conn = fetch_cookies(conn)
     conn.cookies["auth_key"] == options[:auth_key]
+  end
+
+  defp handle_unauthorized_access(conn, options) do
+    case conn.method do
+      "POST" -> handle_form_submit(conn, options)
+      _ -> render_form(conn)
+    end
+  end
+
+  # TODO:
+  defp handle_form_submit(_conn, _options) do
   end
 
   defp render_form(conn) do
