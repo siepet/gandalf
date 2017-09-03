@@ -1,6 +1,6 @@
 # Gandalf
 
-**TODO: Add description**
+Gandalf is a protector plug that keeps away all unwanted visitors.
 
 ## Installation
 
@@ -11,6 +11,25 @@ by adding `gandalf` to your list of dependencies in `mix.exs`:
 def deps do
   [{:gandalf, "~> 0.1.0"}]
 end
+```
+
+Add plug to endpoint file before router:
+```
+Plug Gandalf
+Plug YourApp.Router
+```
+
+## Configuration
+
+Two ways to configure Gandalf:
+1. In `config/config.exs` (or any other env-config)
+```
+config :gandalf, auth_key: "auth_key_goes_here"
+```
+
+2. When adding a plug inside endpoint file, provide auth_key param:
+```
+Plug Gandalf, auth_key: "auth_key_goes_here"
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
