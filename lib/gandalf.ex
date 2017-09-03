@@ -40,7 +40,19 @@ defmodule Gandalf do
   end
 
   defp html_body do
-    {:ok, body} = File.read("lib/form.html")
-    body
+    """
+    <!DOCTYPE html>
+    <html lang="en">
+      <body>
+        <div>
+          <legend>Sign in</legend>
+          <form action="" method="post">
+            <input type="password" placeholder="Password..." name="code" autofocus/>
+            <button type="submit">Sign in</button>
+          </form>
+        </div>
+      </body>
+    </html>
+    """
   end
 end
