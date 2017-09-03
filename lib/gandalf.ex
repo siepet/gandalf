@@ -18,7 +18,7 @@ defmodule Gandalf do
 
   defp check_cookie(conn, options) do
     conn = fetch_cookies(conn)
-    conn.cookies["auth_key"] == options[:auth_key]
+    conn.cookies["auth_key"] == auth_key(options)
   end
 
   defp handle_unauthorized_access(conn, options) do
@@ -28,9 +28,22 @@ defmodule Gandalf do
     end
   end
 
-  # TODO: implement
-  defp handle_form_submit(_conn, _options) do
-    # conn.params
+  defp handle_form_submit(conn, options) do
+    case conn.params["code"] == auth_key(options) do
+      true -> handle_proper_key(conn)
+      false -> render_form(conn)
+    end
+  end
+
+  defp handle_proper_key(conn) do
+    conn
+      |> put_resp_cookie("auth_key", conn.params["code"])
+      |> put_resp_header("location", "/")
+      |> send_resp(302, "text/html")
+  end
+
+  defp auth_key(opts) do
+    Application.get_env(:gandalf, :auth_key) || opts[:auth_key] || "auth_key"
   end
 
   defp render_form(conn) do
