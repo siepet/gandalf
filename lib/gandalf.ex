@@ -4,7 +4,7 @@ defmodule Gandalf do
   plug Plug.Parsers, parsers: [:urlencoded]
 
   def call(conn, options) do
-    conn = super(conn, options) # call Plug.Parser
+    conn = Plug.Parsers.call(conn, options)
     conn
     |> check_access(options)
   end
