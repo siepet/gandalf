@@ -53,19 +53,7 @@ defmodule Gandalf do
   end
 
   defp html_body do
-    """
-    <!DOCTYPE html>
-    <html lang="en">
-      <body>
-        <div>
-          <legend>Sign in</legend>
-          <form action="" method="post">
-            <input type="password" placeholder="Password..." name="code" autofocus/>
-            <button type="submit">Sign in</button>
-          </form>
-        </div>
-      </body>
-    </html>
-    """
+    {:ok, body} = File.read(Path.join(:code.priv_dir(:gandalf), "form.html"))
+    body
   end
 end
