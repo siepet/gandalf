@@ -1,8 +1,6 @@
 defmodule Gandalf do
   use Plug.Builder
 
-  plug Plug.Parsers, parsers: [:urlencoded]
-
   def call(conn, options) do
     conn
     |> check_access(options)
