@@ -4,7 +4,6 @@ defmodule Gandalf do
   plug Plug.Parsers, parsers: [:urlencoded]
 
   def call(conn, options) do
-    conn = Plug.Parsers.call(conn, options)
     conn
     |> check_access(options)
   end
@@ -29,6 +28,7 @@ defmodule Gandalf do
   end
 
   defp handle_form_submit(conn, options) do
+    conn = Plug.Parsers.call(conn, options)
     case conn.params["code"] == auth_key(options) do
       true -> handle_proper_key(conn)
       false -> render_form(conn)
