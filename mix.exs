@@ -34,12 +34,14 @@ defmodule Gandalf.Mixfile do
   defp deps do
     [
       {:plug, "~> 1.0"},
+      {:cowboy, "~> 1.0"}
     ]
   end
 
   defp package do
     [
-      maintainers: ["Marcin Siepetowski"],
+      maintainers: ["Marcin Siepetowski", "Dominik Filip"],
+      licenses: ["MIT"],
       links: %{
         "GitHub" => "http://github.com/siepet/gandalf"
       }
