@@ -1,4 +1,5 @@
 defmodule Gandalf do
+  import IEx
   use Plug.Builder
 
   def call(conn, options) do
@@ -9,13 +10,20 @@ defmodule Gandalf do
   defp check_access(conn, options) do
     case check_cookie(conn, options) do
       true -> conn
-      false -> handle_unauthorized_access(conn, options)
+      false -> check_whitelisted_paths(conn, options)
     end
   end
 
   defp check_cookie(conn, options) do
     conn = fetch_cookies(conn)
     conn.cookies["auth_key"] == auth_key(options)
+  end
+
+  def check_whitelisted_paths(conn, options) do
+    case Regex.match?(whitelisted_paths(options), conn.request_path) do
+      true -> conn
+      false -> handle_unauthorized_access(conn, options)
+    end
   end
 
   defp handle_unauthorized_access(conn, options) do
@@ -42,6 +50,10 @@ defmodule Gandalf do
 
   defp auth_key(opts) do
     Application.get_env(:gandalf, :auth_key) || opts[:auth_key] || "auth_key"
+  end
+
+  def whitelisted_paths(opts) do
+    Application.get_env(:gandalf, :whitelisted_paths) || opts[:whitelisted_paths]
   end
 
   defp render_form(conn) do
