@@ -23,9 +23,7 @@ defmodule Gandalf do
     paths = whitelisted_paths(options)
     ips = whitelisted_ips(options)
 
-    conn
-      |> check_whitelisted_paths(options, paths)
-      |> check_whitelisted_ips(options, ips)
+    check_whitelisted_paths(conn, options, paths) || check_whitelisted_ips(conn, options, ips)
   end
 
   defp check_whitelisted_paths(conn, options, nil), do: handle_unauthorized_access(conn, options)
