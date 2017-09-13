@@ -52,12 +52,11 @@ defmodule GandalfTest do
     assert conn.resp_body =~ "Sign in"
   end
 
-  test "renders page instead of form when accessing whitelisted path" do
+  test "lets pass through when accessing whitelisted path" do
     conn = conn(:get, "/path")
 
     conn = Gandalf.call(conn, @with_whitelisted_path)
 
-    assert conn.state == :sent
-    assert conn.status == 200
+    assert conn.state == :unset
   end
 end
