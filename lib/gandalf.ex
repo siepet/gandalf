@@ -8,35 +8,33 @@ defmodule Gandalf do
   end
 
   defp check_access(conn, options) do
-    case check_cookie(conn, options) do
-      true -> conn
-      false -> check_whitelists(conn, options)
-    end
-  end
-
-  defp check_cookie(conn, options) do
-    conn = fetch_cookies(conn)
-    conn.cookies["auth_key"] == auth_key(options)
-  end
-
-  defp check_whitelists(conn, options) do
-    paths = whitelisted_paths(options)
-    ips = whitelisted_ips(options)
-
-    check_whitelisted_paths(conn, options, paths) || check_whitelisted_ips(conn, options, ips)
-  end
-
-  defp check_whitelisted_paths(conn, options, nil), do: handle_unauthorized_access(conn, options)
-  defp check_whitelisted_paths(conn, options, paths) do
-    case Regex.match?(whitelisted_paths(options), conn.request_path) do
+    case valid?(conn, options) do
       true -> conn
       false -> handle_unauthorized_access(conn, options)
     end
   end
 
-  defp check_whitelisted_ips(conn, options, nil), do: handle_unauthorized_access(conn, options)
-  defp check_whitelisted_ips(conn, _options, _ips) do
-    conn
+  defp valid?(conn, options) do
+    paths = whitelisted_paths(options)
+    ips = whitelisted_ips(options)
+
+    valid_cookie?(conn, options) || valid_path?(conn, options, paths) || valid_ip?(conn, options, ips)
+  end
+
+  defp valid_cookie?(conn, options) do
+    conn = fetch_cookies(conn)
+    conn.cookies["auth_key"] == auth_key(options)
+  end
+
+  defp valid_path?(_conn, _options, nil), do: false
+  defp valid_path?(conn, _options, paths) do
+    Regex.match?(paths, conn.request_path)
+  end
+
+  defp valid_ip?(_conn, _options, nil), do: false
+  defp valid_ip?(conn, _options, ips) do
+    remote_ip = to_string(:inet_parse.ntoa(conn.remote_ip))
+    Enum.member?(ips, remote_ip)
   end
 
   defp handle_unauthorized_access(conn, options) do
