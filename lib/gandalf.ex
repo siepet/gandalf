@@ -57,6 +57,7 @@ defmodule Gandalf do
       |> put_resp_cookie("auth_key", conn.params["code"])
       |> put_resp_header("location", "/")
       |> send_resp(302, "text/html")
+      |> halt
   end
 
   defp auth_key(opts) do
@@ -75,6 +76,7 @@ defmodule Gandalf do
     conn
     |> put_resp_content_type("text/html")
     |> send_resp(200, html_body())
+    |> halt
   end
 
   defp html_body do
