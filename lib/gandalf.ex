@@ -1,5 +1,4 @@
 defmodule Gandalf do
-  import IEx
   use Plug.Builder
 
   def call(conn, options) do

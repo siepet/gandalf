@@ -35,7 +35,7 @@ Plug Gandalf, auth_key: "auth_key_goes_here"
 
 ### Whitelisting
 Paths:
-To whitelist paths, simply provide `whitelistd_paths: ~r/path1|path2/` to config.
+To whitelist paths add `whitelisted_paths: ~r/path1|path2/` to config.
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
